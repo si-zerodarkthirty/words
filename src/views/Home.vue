@@ -1,18 +1,31 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <Item v-for="post in posts"
+      :key="post.id"
+      :post="post"
+      class="list-none my-5"
+    />
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import Item from '@/components/Item'
+import { db } from '@/main'
 
 export default {
   name: 'home',
   components: {
-    HelloWorld
+    Item
+  },
+  data() {
+    return {
+      posts: []
+    }
+  },
+  firestore() {
+    return {
+      posts: db.collection('posts')
+    }
   }
 }
 </script>
