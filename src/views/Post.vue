@@ -24,7 +24,10 @@
         <p>{{ user.displayName }}</p>
         <p class="text-xs">{{ post.createdAt }}</p>
       </div>
-      <div class="ml-5">
+      <div 
+        v-if="currentUser && currentUser.uid === user.id"
+        class="ml-5"
+      >
         <router-link :to=" '/update/' + post.id ">
           <button class="mx-2 mt-2 focus:outline-none">edit</button>
         </router-link>
@@ -42,13 +45,20 @@
 </template>
 
 <script>
+import { auth } from '@/main'
 import { db } from '@/main'
 export default {
   data() {
     return {
       post: {},
-      user: {}
+      user: {},
+      currentUser: {}
     }
+  },
+  created() {
+    auth.onAuthStateChanged(user => { 
+      this.currentUser = user
+    })
   },
   firestore() {
     return {
